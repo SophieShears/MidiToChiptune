@@ -1,0 +1,11 @@
+#Ignore vscode settings
+/.vscode
+
+# Ignore local midi files
+/midi
+
+# Ignore node.js files
+/node_modules
+
+# Ignore all json files
+*.json
