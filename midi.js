@@ -52,14 +52,32 @@ function getNotes(midiData) {
     // Add notes to track if it has, otherwise leave empty
     for (let track = 0; track < midiData.tracks.length; track++) {
         notes[track] = []
+        prevNoteTime = null
+
         if (midiData.tracks[track].notes.length > 0) {
             midiData.tracks[track].notes.forEach(note => {
-                notes[track].push({
-                    time: note.time,
-                    duration: note.duration,
-                    note: note.name,
-                    velocity: note.velocity
-                })
+                // If percussion track has two simultaneous notes only keep one
+                if (midiData.tracks[track].instrument.percussion) {
+                    if (prevNoteTime != note.time) {
+                        notes[track].push({
+                            time: note.time,
+                            duration: note.duration,
+                            note: note.name,
+                            velocity: note.velocity
+                        })
+                    }
+                    prevNoteTime = note.time
+                }
+                // Otherwise add notes as normal
+                else {
+                    notes[track].push({
+                        time: note.time,
+                        duration: note.duration,
+                        note: note.name,
+                        velocity: note.velocity
+                    })
+                }
+                
             })
         }
     }
@@ -74,7 +92,7 @@ function getParts(notes, instruments) {
     for (let track = 0; track < Object.keys(notes).length; track++) {
         if (notes[track].length) {
             parts[track] = new Tone.Part(((time, value) => {
-                // Check if the track is drums and leave out note names if so
+                // Check if the track is drums/noise and leave out note names if so
                 if (instruments[track].name === 'NoiseSynth') {
                     instruments[track].triggerAttackRelease(value.duration, time, value.velocity);
                 } else {
