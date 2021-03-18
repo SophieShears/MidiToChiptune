@@ -7,17 +7,29 @@ async function getMidi() {
     return midi;
 }
 
-
+// TODO: check what track instrument should be for then get that instrument's settings
 // Get every instrument based on their instrument number
 function getInstruments(midiData) {
     instruments = {};
     
     for (let track = 0; track < midiData.tracks.length; track++) {
-        instNum = midiData.tracks[track].instrument.number;
-        if (midiData.tracks[track].precussion) {
-            instruments[track] = new Tone.NoiseSynth().toDestination();
+        let instNum = midiData.tracks[track].instrument.number;
+        
+        if (midiData.tracks[track].instrument.percussion) {
+            instruments[track] = new Tone.NoiseSynth(options.noiseOptions).toDestination();
+        } else if (instNum >= 32 && instNum <= 39) {
+            instruments[track] = new Tone.PolySynth(Tone.Synth, options.triangleOptions).toDestination();
+        } 
+        else if (instNum >= 40 && instNum <= 55 || instNum === 81) {
+            instruments[track] = new Tone.PolySynth(Tone.Synth, options.sawtoothOptions).toDestination();
+        }
+        else if (instNum >= 24 && instNum <= 31) {
+            instruments[track] = new Tone.PolySynth(Tone.Synth, options.squareOptions).toDestination();
+        }
+        else if (instNum >= 56 && instNum <= 80) {
+            instruments[track] = new Tone.PolySynth(Tone.Synth, options.squareOptions).toDestination();
         } else {
-            instruments[track] = new Tone.PolySynth().toDestination();
+            instruments[track] = new Tone.PolySynth(Tone.Synth, options.pulseOptions).toDestination();
         }
     }
 
@@ -54,7 +66,12 @@ function getParts(notes, instruments) {
     for (let track = 0; track < Object.keys(notes).length; track++) {
         if (notes[track].length) {
             parts[track] = new Tone.Part(((time, value) => {
-                instruments[track].triggerAttackRelease(value.note, value.duration, time, value.velocity);
+                // Check if the track is drums and leave out note names if so
+                if (instruments[track].name === 'NoiseSynth') {
+                    instruments[track].triggerAttackRelease(value.duration, time, value.velocity);
+                } else {
+                    instruments[track].triggerAttackRelease(value.note, value.duration, time, value.velocity);
+                }
             }), notes[track]).start(0);
         }
     } 
