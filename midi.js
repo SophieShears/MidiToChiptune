@@ -7,7 +7,7 @@ async function getMidi() {
     return midi;
 }
 
-// TODO: check what track instrument should be for then get that instrument's settings
+
 // Get every instrument based on their instrument number
 function getInstruments(midiData) {
     instruments = {};
@@ -15,20 +15,28 @@ function getInstruments(midiData) {
     for (let track = 0; track < midiData.tracks.length; track++) {
         let instNum = midiData.tracks[track].instrument.number;
         
+        // Set drum synths (percussion)
         if (midiData.tracks[track].instrument.percussion) {
             instruments[track] = new Tone.NoiseSynth(options.noiseOptions).toDestination();
-        } else if (instNum >= 32 && instNum <= 39) {
+        } 
+        // Set triangle synths (bass instruments)
+        else if (instNum >= 32 && instNum <= 39) {
             instruments[track] = new Tone.PolySynth(Tone.Synth, options.triangleOptions).toDestination();
         } 
+        // Set sawtooth synths (stringed instruments)
         else if (instNum >= 40 && instNum <= 55 || instNum === 81) {
             instruments[track] = new Tone.PolySynth(Tone.Synth, options.sawtoothOptions).toDestination();
         }
+        // Set square synths (guitars)
         else if (instNum >= 24 && instNum <= 31) {
             instruments[track] = new Tone.PolySynth(Tone.Synth, options.squareOptions).toDestination();
         }
+        // Set square synths (wind instruments)
         else if (instNum >= 56 && instNum <= 80) {
             instruments[track] = new Tone.PolySynth(Tone.Synth, options.squareOptions).toDestination();
-        } else {
+        } 
+        // Set pulse synths for  all else
+        else {
             instruments[track] = new Tone.PolySynth(Tone.Synth, options.pulseOptions).toDestination();
         }
     }
