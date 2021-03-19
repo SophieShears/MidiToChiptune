@@ -11,10 +11,11 @@
 
 <body>
     <h1>Midi to Chiptune</h1>
-    <input type='file' id='file-selector' accept=".mid">
-    <input type="range" min="-60" max="0" value="-20" id="volSlider" oninput="setVolume(this.value)" onchange="setVolume(this.value)">
+    <input type='file' id='file-selector' accept=".mid" oninput="loadFile()">
+    <input type="range" min="-60" max="0" value="-15" id="volSlider" oninput="setVolume(this.value)" onchange="setVolume(this.value)">
     
-    <button onclick="playSound()">Play</button>
+    <button onclick="playPause()">Play/Pause</button>
+    <button onclick="stop()">Stop</button>
     
     <script src="options.js"></script>
     <script src="midi.js"></script>
