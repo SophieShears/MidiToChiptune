@@ -7,17 +7,26 @@ function loadFile() {
     Tone.getDestination().volume.value = document.getElementById('volSlider').value;
     
     // Get all the midi data
-    midiData = getMidi();    
-    
-    // If a midi file has been loaded play it
+    const midiData = getMidi();    
+
+    // If a midi file has been  it for playback
     midiData.then((midiData) => {
 
-        // Establish an intrument for each track
+        // Establish an intrument/analyers/notes for each track
         const instruments = getInstruments(midiData);
+        getAnalysers(instruments);
+        allContext(instruments);
         const notes = getNotes(midiData);
 
         // Load and schedule each part for tracks that have notes
         getParts(notes, instruments);
+        
+        // Schedule drawing to take place as soon as playback starts
+        Tone.Transport.schedule((time) => {
+            Tone.Draw.schedule(() => { 
+                drawWave();
+            }, time);
+        });
     })
 }
 

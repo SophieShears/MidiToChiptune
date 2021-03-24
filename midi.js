@@ -2,7 +2,7 @@
 async function getMidi() {
     const midiFile = document.getElementById('file-selector').files[0];
     const midiURL = window.URL.createObjectURL(midiFile);
-    const midi = await Midi.fromUrl(midiURL);
+    let midi = await Midi.fromUrl(midiURL);
 
     return midi;
 }

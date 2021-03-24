@@ -12,12 +12,33 @@
 <body>
     <h1>Midi to Chiptune</h1>
     <input type='file' id='file-selector' accept=".mid" oninput="loadFile()">
-    <input type="range" min="-60" max="0" value="-15" id="volSlider" oninput="setVolume(this.value)" onchange="setVolume(this.value)">
+    <input type="range" min="-100" max="0" value="-15" id="volSlider" oninput="setVolume(this.value)" onchange="setVolume(this.value)">
     
     <button onclick="playPause()">Play/Pause</button>
     <button onclick="stop()">Stop</button>
     
+    <div style = "position: absolute; left: 80px; top:200px">
+        <span>wave 0</span><canvas id="wave0" width="182" height="60"></canvas>
+        <span>wave 1</span><canvas id="wave1" width="182" height="60"></canvas>
+        <span>wave 2</span><canvas id="wave2" width="182" height="60"></canvas>
+        <span>wave 3</span><canvas id="wave3" width="182" height="60"></canvas>
+        <span>wave 4</span><canvas id="wave4" width="182" height="60"></canvas>
+        <span>wave 5</span><canvas id="wave5" width="182" height="60"></canvas>
+        <span>wave 6</span><canvas id="wave6" width="182" height="60"></canvas>
+        <span>wave 7</span><canvas id="wave7" width="182" height="60"></canvas>
+        <span>wave 8</span><canvas id="wave8" width="182" height="60"></canvas>
+        <span>wave 9</span><canvas id="wave9" width="182" height="60"></canvas>
+        <span>wave 10</span><canvas id="wave10" width="182" height="60"></canvas>
+        <span>wave 11</span><canvas id="wave11" width="182" height="60"></canvas>
+        <span>wave 12</span><canvas id="wave12" width="182" height="60"></canvas>
+        <span>wave 13</span><canvas id="wave13" width="182" height="60"></canvas>
+        <span>wave 14</span><canvas id="wave14" width="182" height="60"></canvas>
+        <span>wave 15</span><canvas id="wave15" width="182" height="60"></canvas>
+
+    </div>
+
     <script src="options.js"></script>
+    <script src="visualize.js"></script>
     <script src="midi.js"></script>
     <script src="index.js"></script>
 </body>
