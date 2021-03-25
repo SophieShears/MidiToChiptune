@@ -1,0 +1,178 @@
+body {
+    background-color: #242121;
+    font-family: 'Press Start 2P', cursive;
+    
+}
+
+.header {
+    color: white;
+    text-align: center;
+    font-size: 25px;
+    position: relative;
+    top: 20px
+}
+
+
+.button-play {
+    border: 0;
+    background: transparent;
+    box-sizing: border-box;
+    width: 0;
+    height: 37px;
+
+    border-color: transparent transparent transparent #ffffff;
+    transition: 100ms all ease;
+    cursor: pointer;
+
+    border-style: solid;
+    border-width: 18px 0 18px 30px;
+
+    display: flex;
+    position: relative;
+    top: 17px;
+    right: 32px;
+    margin: 0 auto;
+}
+
+
+.button-stop {
+    background-color: rgb(255, 255, 255);
+    border: 1px white;
+    height: 37px;
+    width: 37px;
+
+    cursor: pointer;
+    
+    display: flex;
+    position: relative;
+    top: -20px;
+    right: -18px;
+    margin: 0 auto; 
+}
+
+
+input[type="file"] {
+    display: none;
+}
+
+.fileUpload {
+    background: white;
+    color: #242121;
+    width: 65px;
+    padding: 11px 12px;
+    cursor: pointer; 
+    
+    display: flex;
+    position: relative;
+    top: 70px;
+    right: 132px;
+    margin: 0 auto;
+}
+
+
+
+.blueLine1 {
+    width: 100px;
+    height: 350px;
+    background: #569dcb;
+    transform: skew(-40deg);
+    position: absolute; 
+    top: 0px;
+    z-index: -1;
+}
+
+.blueLine2 {
+    width: 100px;
+    height: 350px;
+    background: #569dcb;
+    transform: skew(-40deg);
+    position: absolute; 
+    bottom: 0px;
+    right: 50px;
+    z-index: -1;
+}
+
+.yellowLine1 {
+    width: 100px;
+    height: 500px;
+    background: #f9b131;
+    transform: skew(-40deg);
+    position: absolute; 
+    top: 0px;
+    left: 42px;
+    z-index: -1;
+}
+
+.yellowLine2 {
+    width: 100px;
+    height: 500px;
+    background: #f9b131;
+    transform: skew(-40deg);
+    position: absolute; 
+    bottom: 0px;
+    right: 85px;
+    z-index: -1;
+}
+
+.redLine1 {
+    width: 100px;
+    height: 700px;
+    background: #a92326;
+    transform: skew(-40deg);
+    position: absolute; 
+    top: 0px;
+    left: 57px;
+    z-index: -1;
+}
+.redLine2 {
+    width: 100px;
+    height: 700px;
+    background: #a92326;
+    transform: skew(-40deg);
+    position: absolute; 
+    bottom: 0px;
+    right: 100px;
+    z-index: -1;
+}
+
+
+
+.slider {
+    -webkit-appearance: none;  /* Override default CSS styles */
+    appearance: none;
+    width: 100px; 
+    height: 15px;
+    background: #ffffff; 
+    outline: none; 
+    opacity: 1; 
+
+    display: flex;
+    position: relative;
+    top: 43px;
+    right: -123px;
+    margin: 0 auto;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+    width: 15px; 
+    height: 15px; 
+    background: #242121; 
+    cursor: pointer; 
+    outline: solid white;
+    outline-width: 2px;
+  }
+
+.wave {
+    background: rgb(255, 255, 255);
+    width: 1050px;
+    height: 400px;
+    border-style:solid;
+    border-width: 50px;
+    border-color: rgb(255, 255, 255);
+    border-radius: 15%;
+    margin: 0 auto;
+    position: flex;
+    
+}
