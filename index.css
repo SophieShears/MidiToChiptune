@@ -1,7 +1,7 @@
 body {
     background-color: #242121;
     font-family: 'Press Start 2P', cursive;
-    
+    overflow-x: hidden;  
 }
 
 .header {
