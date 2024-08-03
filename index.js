@@ -28,7 +28,7 @@ function loadFile() {
 
         // Load and schedule each part for tracks that have notes
         getParts(notes, instruments);
-        
+
         // Schedule drawing to take place as soon as playback starts
         Tone.Transport.schedule((time) => {
             Tone.Draw.schedule(() => { 
@@ -63,7 +63,7 @@ function initRecorder() {
             anchor.href = url;
             // anchor.click();
             download = anchor;
-        }, 500); // tail end
+        }, 500); // tail end necessar?
         console.log('After stopping: ', recorder.state);
     });
 
@@ -71,7 +71,12 @@ function initRecorder() {
         console.log('Pause event, current recorder state: ', recorder.state);
         recorder.pause();
         console.log('After pausing: ', recorder.state);
-    })
+    });
+
+    Tone.Transport.on('ended', () => {
+        console.log('Song FINISHED!!!!!!!!!!!!!!!!!!!!!!!');
+        // stop, ...
+    });
 }
 
 
@@ -100,15 +105,6 @@ function stop() {
 }
 
 function save() {
-    let customRecorder = new Tone.Recorder();
-    customRecorder.start();
-    console.log('customrecorder: ', customRecorder.state);
-    customRecorder.pause();
-    console.log('customrecorder: ', customRecorder.state);
-    customRecorder.start();
-    console.log('customrecorder: ', customRecorder.state);
-
-
     console.log('Download clicked!');
     if (download) {
         download.click();
@@ -117,5 +113,8 @@ function save() {
         errorMessage.style.display = 'block'; // Show error message
         setTimeout(() => { errorMessage.style.display = 'none'; }, 5000);
     }
+
+    console.log('check it: ', Tone.Transport.loopEnd);
+    console.log('check to: ', Tone.Transport.position);
 }
 
