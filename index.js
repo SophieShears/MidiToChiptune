@@ -96,6 +96,10 @@ function playPause() {
     }  
 
 }
+
+function callbackTrackEnd() {
+    console.log('HEY, THE TRACK IS OVEr AND tHATs GOOD!');
+}
   
 function stop() {
     if (Tone.Transport.state !== 'stopped') {

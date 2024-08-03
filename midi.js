@@ -91,14 +91,29 @@ function getParts(notes, instruments) {
 
     for (let track = 0; track < Object.keys(notes).length; track++) {
         if (notes[track].length) {
+            // Introduce END marker https://github.com/Tonejs/Tone.js/issues/802
+            const lastNote = notes[track][notes[track].length - 1];
+            const endMarker = { time: lastNote.time + lastNote.duration, duration: 0, note: 'END' };
+            notes[track].push(endMarker);
+            console.log('Notes: ', notes[track]);
+
             parts[track] = new Tone.Part(((time, value) => {
-                // Check if the track is drums/noise and leave out note names if so
-                if (instruments[track].name === 'NoiseSynth') {
-                    instruments[track].triggerAttackRelease(value.duration, time, value.velocity);
+
+                console.log('Note: ', value.note)
+                
+                if (value.note === 'END') {
+                    console.log('Sequence ended for track', track);
+                    callbackTrackEnd();
                 } else {
-                    instruments[track].triggerAttackRelease(value.note, value.duration, time, value.velocity);
+                    // Check if the track is drums/noise and leave out note names if so
+                    if (instruments[track].name === 'NoiseSynth') {
+                        instruments[track].triggerAttackRelease(value.duration, time, value.velocity);
+                    } else {
+                        instruments[track].triggerAttackRelease(value.note, value.duration, time, value.velocity);
+                    }
                 }
             }), notes[track]).start(0);
+        
         }
     } 
 }
