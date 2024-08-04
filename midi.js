@@ -92,18 +92,16 @@ function getParts(notes, instruments) {
     for (let track = 0; track < Object.keys(notes).length; track++) {
         if (notes[track].length) {
             // Introduce END marker https://github.com/Tonejs/Tone.js/issues/802
-            const lastNote = notes[track][notes[track].length - 1];
+            const lastNote = notes[track].at(-1);
             const endMarker = { time: lastNote.time + lastNote.duration, duration: 0, note: 'END' };
             notes[track].push(endMarker);
             console.log('Notes: ', notes[track]);
 
             parts[track] = new Tone.Part(((time, value) => {
-
-                console.log('Note: ', value.note)
-                
                 if (value.note === 'END') {
                     console.log('Sequence ended for track', track);
-                    callbackTrackEnd();
+                    const event = new CustomEvent('seqEnd', { detail: { message: 'Sequence has ended.' } });
+                    document.dispatchEvent(event);
                 } else {
                     // Check if the track is drums/noise and leave out note names if so
                     if (instruments[track].name === 'NoiseSynth') {
