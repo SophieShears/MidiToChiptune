@@ -11,11 +11,9 @@ function loadFile() {
     // Stop any playback and clear current song
     stop();
     Tone.Transport.cancel();
-        
-    // Init recorder
-    initRecorder(); 
 
     // Init track ended event
+    document.removeEventListener('seqEnd', onSequenceEnd);
     document.addEventListener('seqEnd', onSequenceEnd);
 
     // Set initial volume
@@ -49,6 +47,11 @@ function initRecorder() {
     console.log('Init recorder: ', recorder);
     Tone.getDestination().connect(recorder);
 
+    Tone.Transport.off('start');
+    Tone.Transport.off('stop');
+    Tone.Transport.off('pause');
+
+
     Tone.Transport.on('start', () => {
         if(recorder.state !== 'started') {
             recorder.start();
@@ -75,22 +78,22 @@ function initRecorder() {
                             anchor.href = url;
                             let download = anchor;
                             resolve(download);
-                    }, 0); // tail end necessary?
+                    }, 2000); 
                 } else {
-                    console.log('Stop event, but recorder already stopped!');
+                    console.log('Stop event, recorder already running!');
                 }
             });
         });
 
-    Tone.Transport.on('pause', () => {
-        if(recorder.state !== 'paused') {
-            recorder.pause();
-            console.log('Pause event, new recorder state: ', recorder.state);
-        } else {
-            console.log('Pause event, but recorder already paused!');
-        }
-    });
-
+    // Slight desync and less use-cases than just adding in breaks
+    // Tone.Transport.on('pause', () => {
+    //     if(recorder.state !== 'paused') {
+    //         recorder.pause();
+    //         console.log('Pause event, new recorder state: ', recorder.state);
+    //     } else {
+    //         console.log('Pause event, but recorder already paused!');
+    //     }
+    // });
 }
 
 
@@ -104,15 +107,19 @@ function playPause() {
         console.log('Pause tone');
         Tone.Transport.pause();
     }
-    else if(Tone.Transport.state === 'paused' || Tone.Transport.state === 'stopped') {
+    else if(Tone.Transport.state === 'paused') {
         console.log('Play/Resume tone');
         Tone.Transport.start()
-    }  
+    } else if(Tone.Transport.state === 'stopped') {
+        console.log('Tone stopped: Initializing recorder.');
+        initRecorder();
+        Tone.Transport.start();
+    }
 
 }
 
 function onSequenceEnd(event) {
-    console.log('Track reached end event: ', event.detail.message);
+    console.log('Sequence reached end event: ', event.detail.message);
     stop();
 }
   
@@ -124,19 +131,23 @@ function stop() {
 }
 
 async function save() {
-    console.log('Save clicked, stopping playback and attempting to download!');
-    // Stop playback which fires event and stops recording
-    stop();
-    // Await for event to complete and to assign the download
-    const downloadAnchor = await downloadReadyPromise;
-    const errorMessage = document.getElementById('error-message');
-    if (downloadAnchor) {
-        console.log('Download ready, clicking.')
-        downloadAnchor.click();
+    if(recorder) {
+        console.log('Save, stopping playback if necessary and awaiting download!');
+        // Stop playback which fires event and stops recording
+        stop();
+        // Await for event to complete and to assign the download
+        const downloadAnchor = await downloadReadyPromise;
+        const errorMessage = document.getElementById('error-message');
+        if (downloadAnchor) {
+            console.log('Ready, downloading.')
+            downloadAnchor.click();
+        } else {
+            errorMessage.textContent = 'No recording available.';
+            errorMessage.style.display = 'block'; // Show error message
+            setTimeout(() => { errorMessage.style.display = 'none'; }, 5000);
+        }
     } else {
-        errorMessage.textContent = 'No recording available. Load and play first.';
-        errorMessage.style.display = 'block'; // Show error message
-        setTimeout(() => { errorMessage.style.display = 'none'; }, 5000);
+        console.log('Nothing loaded.')
     }
 }
 
