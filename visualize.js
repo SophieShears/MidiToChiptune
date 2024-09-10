@@ -34,23 +34,24 @@ function allContext(instruments) {
 // Create soundwave of each instrument
 function createWave(context, values, color) {
     const canvasWidth = 250, canvasHeight = 100;
-
-    context.clearRect(0, 0, canvasWidth, canvasHeight);
-    context.beginPath();
-  
-    context.lineJoin = "round";
-    context.lineWidth = 2;
+    if(context != null) {
+      context.clearRect(0, 0, canvasWidth, canvasHeight);
+      context.beginPath();
     
-  
-    context.moveTo(0, (values[0] / 255) * canvasHeight);
-    for (let i = 1, len = values.length; i < len; i++){
-      let val = values[i];
-      let x = canvasWidth * (i / len);
-      let y = val * canvasHeight;
-      context.lineTo(x, y);
+      context.lineJoin = "round";
+      context.lineWidth = 2;
+      
+    
+      context.moveTo(0, (values[0] / 255) * canvasHeight);
+      for (let i = 1, len = values.length; i < len; i++){
+        let val = values[i];
+        let x = canvasWidth * (i / len);
+        let y = val * canvasHeight;
+        context.lineTo(x, y);
+      }
+      context.stroke();
+      context.strokeStyle = colors[color % 4];
     }
-    context.stroke();
-    context.strokeStyle = colors[color % 4];
   }
 
 
