@@ -8,14 +8,12 @@
     <link rel="stylesheet" href="index.css">
     <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.13/Tone.js"></script>
-    <!-- Only necessary when using recorder.pause() to allow resuming -->
-    <script src="https://rupel190.github.io/Tone.js/Tone.js"></script> 
     <script src="https://unpkg.com/@tonejs/midi@2.0.27/build/Midi.js"></script>
 </head>
 
 <body>
     <div class="header">Midi to Chiptune</div>    
-    
+
     <div class="blueLine1"></div>
     <div class="blueLine2"></div>
     <div class="yellowLine1"></div>
@@ -23,21 +21,17 @@
     <div class="redLine1"></div>
     <div class="redLine2"></div>
     
-    <div class="controls-container">
-        <label for="file-selector" class="file-upload">Load</label>
-        <input type='file' id='file-selector' accept=".mid" oninput="loadFile()">
+    <label for="file-selector" class="fileUpload">Load</label>
+    <input type='file' id='file-selector' accept=".mid" oninput="loadFile()">
+    
+    <div class="slideContainer"></div>
+        <input class="slider" type="range" min="-60" max="0" value="-15" id="volSlider" oninput="setVolume(this.value)" onchange="setVolume(this.value)">
+    </div>
 
-        <label for="save-recording" class="file-upload" onclick="save()">Save</label>
-        
-        <div class="slideContainer">
-            <input class="slider" type="range" min="-60" max="0" value="-15" id="volSlider" oninput="setVolume(this.value)" onchange="setVolume(this.value)">
-        </div>
-
+    <div class="container">
         <button class="button-play" onclick="playPause()"></button>
         <button class="button-stop" onclick="stop()"></button>
     </div>
-    <div id="error-message" class="error-message"></div>
-    
     
     <div class="wave">
         <span></span><canvas id="wave0" width="250" height="100"></canvas>
